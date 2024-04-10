@@ -1,4 +1,4 @@
-import { Outlet, useRoutes } from 'react-router-dom';
+import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
 import { ComponentType, FC, PropsWithChildren, Suspense, lazy } from 'react';
@@ -45,6 +45,11 @@ const lazyRoutes: RouteObject[] = [
         ),
         children: [
           {
+            path: '',
+            element: <Navigate to={paths.dashboard} replace={true} />,
+          },
+
+          {
             path: paths.dashboard,
             element: (
               <DashboardLayout>
@@ -53,16 +58,16 @@ const lazyRoutes: RouteObject[] = [
             ),
             children: [
               {
+                path: '',
+                element: <Navigate to={paths.subcription} replace={true} />,
+              },
+              {
                 path: paths.revenue,
                 element: <RevenuePage />,
               },
               {
                 path: paths.subcription,
                 element: <SubcriptionPage />,
-              },
-              {
-                element: <NotFoundPage />,
-                path: '*',
               },
             ],
           },

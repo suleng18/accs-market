@@ -1,7 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useEffect, useState } from 'react';
 import axios from 'axios';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  LabelList,
+  ResponsiveContainer,
+} from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+
 const SubcriptionPage = () => {
   const [data, setData] = useState<any>();
   useEffect(() => {
@@ -13,27 +26,36 @@ const SubcriptionPage = () => {
     fetchData();
   }, []);
   return (
-    <LineChart
-      width={500}
-      height={300}
-      data={data}
-      margin={{
-        top: 20,
-        right: 30,
-        left: 20,
-        bottom: 10,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="pv" stroke="#8884d8">
-        <LabelList content={<CustomizedLabel />} />
-      </Line>
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-    </LineChart>
+    <Card className="col-span-4">
+      <CardHeader>
+        <CardTitle>Subcription</CardTitle>
+      </CardHeader>
+      <CardContent className="pl-2">
+        <ResponsiveContainer width="100%" height={500}>
+          <LineChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="pv" stroke="#8884d8">
+              <LabelList content={<CustomizedLabel />} />
+            </Line>
+            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          </LineChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
   );
 };
 

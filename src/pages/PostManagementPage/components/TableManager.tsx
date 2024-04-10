@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -12,20 +13,39 @@ import { Eye } from 'lucide-react';
 import { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface TableManagerProps {
-  data: IPost[] | undefined;
+  data: IPost[];
+  itemSelected: IPost[];
+  limit: number;
+  isLoading: boolean;
+  handleCheckAll: (checked: boolean) => void;
+  handleCheckItem: (checked: boolean, post: IPost) => void;
 }
-const TableManager: FC<TableManagerProps> = ({ data }) => {
-  const naigate = useNavigate();
+const TableManager: FC<TableManagerProps> = ({
+  data,
+  itemSelected,
+  limit,
+  isLoading,
+  handleCheckAll,
+  handleCheckItem,
+}) => {
+  const navigate = useNavigate();
   const handleClick = useCallback(
     (id: number) => {
-      naigate(`${id}`);
+      navigate(`${id}`);
     },
-    [naigate]
+    [navigate]
   );
   return (
     <Table className="border">
       <TableHeader>
         <TableRow>
+          <TableHead className="text-center w-5">
+            <Checkbox
+              disabled={isLoading || data?.length === 0}
+              checked={itemSelected.length === limit}
+              onCheckedChange={handleCheckAll}
+            />
+          </TableHead>
           <TableHead className="w-[100px] text-center font-bold text-sm">Id</TableHead>
           <TableHead className="text-center font-bold">User Id</TableHead>
           <TableHead className=" font-bold">Title</TableHead>
@@ -35,6 +55,12 @@ const TableManager: FC<TableManagerProps> = ({ data }) => {
       <TableBody>
         {data?.map((item) => (
           <TableRow key={item.id}>
+            <TableHead className="text-center">
+              <Checkbox
+                checked={!!itemSelected.find((post) => post.id === item.id)}
+                onCheckedChange={(checked: boolean) => handleCheckItem(checked, item)}
+              />
+            </TableHead>
             <TableCell className="font-medium text-center text-base">{item.id}</TableCell>
             <TableCell className="font-medium text-center text-base">{item.userId}</TableCell>
             <TableCell className="font-medium text-start text-base">{item.title}</TableCell>

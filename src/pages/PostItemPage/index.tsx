@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { paths } from '@/constants';
 import { toast } from 'sonner';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 const PostItemPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -38,13 +39,18 @@ const PostItemPage = () => {
   return (
     <Dialog open={true} onOpenChange={() => navigate(-1)}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4"></div>
+        <Card>
+          <CardHeader>
+            <CardTitle>{post?.title}</CardTitle>
+            <CardDescription>{post?.body}</CardDescription>
+          </CardHeader>
+          {/* <CardContent>
+            <p>Card Content</p>
+          </CardContent>
+          <CardFooter>
+            <p>Card Footer</p>
+          </CardFooter> */}
+        </Card>
       </DialogContent>
     </Dialog>
   );

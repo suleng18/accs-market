@@ -10,7 +10,7 @@ type tabsType = 'subcription' | 'revenue';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
-  const [value, setValue] = useState<tabsType>('revenue');
+  const [value, setValue] = useState<tabsType>('subcription');
 
   const listButton = useMemo(
     () =>
@@ -34,8 +34,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     [navigate]
   );
   return (
-    <div className="my-5 mx-1">
-      <div className="flex gap-2 mx-3">
+    <div className="my-5  flex flex-col gap-4 px-10 ">
+      <h3 className="text-3xl font-bold tracking-tight text-start">Dashboard</h3>
+      <div className="flex gap-2 ">
         {listButton.map((item) => (
           <Button
             size={'sm'}
@@ -48,8 +49,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </Button>
         ))}
       </div>
-
-      {children}
+      <div className="my-5">{children}</div>
     </div>
   );
 };

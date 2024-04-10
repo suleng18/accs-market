@@ -1,9 +1,8 @@
 import LogoComponent from '@/components/LogoComponent';
 
 import { FC } from 'react';
-import { Separator } from '@/components/ui/separator';
-import BreadcumbComponent from '@/components/BreadcumbComponent';
 import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
 interface MainLayoutProps {
   children: React.ReactNode;
 }
@@ -12,15 +11,15 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="grid grid-cols-11 ">
       {/* Navigator */}
-      <div className="col-span-2  min-h-screen px-3 py-4 border-r">
+      <div className="col-span-2 space-y-3  min-h-screen px-3 py-4 border-r">
         <LogoComponent />
-        <Separator />
+        {/* <Separator /> */}
         <Sidebar />
       </div>
       {/* Content */}
       <div className="col-span-9">
-        <div></div>
-        <BreadcumbComponent />
+        <Header />
+        {/* <BreadcumbComponent /> */}
         <div>{children}</div>
       </div>
     </div>
