@@ -17,9 +17,9 @@ const SettingsPage = () => {
   // );
 
   return (
-    <div className="max-w-[800px] m-auto pt-24">
-      <div className="grid grid-cols-2 gap-8">
-        <div>
+    <div className="lg:max-w-[800px] m-auto pt-24 sm:max-w-[80%] xs:max-w-[80%]">
+      <div className="grid lg:grid-cols-2 gap-8 md:grid-cols-1 ">
+        <div className="">
           <Label htmlFor="title" className="block w-full ml-1 text-base font-semibold text-left">
             Title
           </Label>
