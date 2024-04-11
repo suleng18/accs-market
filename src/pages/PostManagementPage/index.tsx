@@ -21,7 +21,6 @@ const PostManagementPage = () => {
     userId: searchParams.get('userId') || null,
     title: searchParams.get('title') || null,
   });
-  console.log('🚀 ~ PostManagementPage ~ filters:', filters);
   const [total] = useState(100); // fix cứng là 100 do api không trả về total
   const [selected, setSelected] = useState<IPost[]>([]);
   const { id } = useParams();
@@ -31,7 +30,7 @@ const PostManagementPage = () => {
       const res = await getPosts(filters);
       setData(() => res);
       if (!id) {
-        const _filters = cleanObject({ ...filters });
+        const _filters = cleanObject({ ...filters }) as Record<string, string>;
         navigate(`/${paths.postsManagement}?${new URLSearchParams(_filters).toString()}`, {
           replace: true,
         });

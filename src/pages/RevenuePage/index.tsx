@@ -26,7 +26,7 @@ const RevenuePage = () => {
               tickFormatter={(value) => `$${value}`}
             />
             <Bar dataKey="total" fill="#8884d8" radius={[4, 4, 0, 0]}>
-              {dataRevenue.map((entry, index) => (
+              {dataRevenue.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={colors[index % 20]} />
               ))}
             </Bar>

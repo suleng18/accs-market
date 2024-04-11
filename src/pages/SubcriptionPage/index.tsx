@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FunctionComponent, useEffect, useState } from 'react';
-import axios from 'axios';
+import { FunctionComponent } from 'react';
 import {
   LineChart,
   Line,
