@@ -3,6 +3,8 @@ import { Gauge, Table, Settings } from 'lucide-react';
 import { paths } from '@/constants';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import LogoComponent from './LogoComponent';
+import { Separator } from './ui/separator';
 const Sidebar = () => {
   const menus = useMemo(
     () => [
@@ -25,7 +27,9 @@ const Sidebar = () => {
     []
   );
   return (
-    <div>
+    <div className="space-y-3">
+      <LogoComponent />
+      <Separator />
       <div className="px-3 py-2">
         <h2 className="mb-4 px-4 text-start text-2xl text-white font-bold tracking-tight">Main</h2>
         <ul className="space-y-3">

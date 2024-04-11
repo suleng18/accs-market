@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { IPost } from '@/types';
-import { Eye } from 'lucide-react';
+import { Eye, Inbox } from 'lucide-react';
 import { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface TableManagerProps {
@@ -53,24 +53,35 @@ const TableManager: FC<TableManagerProps> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.map((item) => (
-          <TableRow key={item.id}>
-            <TableHead className="text-center">
-              <Checkbox
-                checked={!!itemSelected.find((post) => post.id === item.id)}
-                onCheckedChange={(checked: boolean) => handleCheckItem(checked, item)}
-              />
-            </TableHead>
-            <TableCell className="font-medium text-center text-base">{item.id}</TableCell>
-            <TableCell className="font-medium text-center text-base">{item.userId}</TableCell>
-            <TableCell className="font-medium text-start text-base">{item.title}</TableCell>
-            <TableCell className="font-medium text-start text-base">
-              <Button size={'icon'} variant={'ghost'} onClick={() => handleClick(item.id)}>
-                <Eye />
-              </Button>
+        {data.length > 0 ? (
+          data?.map((item) => (
+            <TableRow key={item.id}>
+              <TableHead className="text-center">
+                <Checkbox
+                  checked={!!itemSelected.find((post) => post.id === item.id)}
+                  onCheckedChange={(checked: boolean) => handleCheckItem(checked, item)}
+                />
+              </TableHead>
+              <TableCell className="font-medium text-center text-base">{item.id}</TableCell>
+              <TableCell className="font-medium text-center text-base">{item.userId}</TableCell>
+              <TableCell className="font-medium text-start text-base">{item.title}</TableCell>
+              <TableCell className="font-medium text-start text-base">
+                <Button size={'icon'} variant={'ghost'} onClick={() => handleClick(item.id)}>
+                  <Eye />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={5}>
+              <div className=" mx-auto my-32 flex flex-col items-center gap-3">
+                <Inbox className="h-[100px] w-[100px] " />
+                <h5 className="text-2xl">No posts available</h5>
+              </div>
             </TableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

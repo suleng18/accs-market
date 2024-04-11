@@ -1,8 +1,8 @@
-import React from 'react';
 import { Input } from './ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import SheetMenu from './SheetMenu';
 
 const Header = () => {
   const headers = [
@@ -21,20 +21,23 @@ const Header = () => {
   ];
   return (
     <div className="border flex items-center px-5 py-3 justify-between">
-      <nav className={cn('flex items-center space-x-4 lg:space-x-6 mx-6')}>
-        {headers.map((header) => (
-          <Link
-            to={'/'}
-            className={cn(
-              'text-sm font-medium transition-colors hover:text-primary',
-              header.text !== 'Overview' && 'text-muted-foreground'
-            )}
-            key={header.text}
-          >
-            {header.text}
-          </Link>
-        ))}
-      </nav>
+      <div className="flex items-center">
+        <SheetMenu />
+        <nav className={cn('flex items-center space-x-4 lg:space-x-6 mx-6', 'xs:hidden')}>
+          {headers.map((header) => (
+            <Link
+              to={'/'}
+              className={cn(
+                'text-sm font-medium transition-colors hover:text-primary',
+                header.text !== 'Overview' && 'text-muted-foreground'
+              )}
+              key={header.text}
+            >
+              {header.text}
+            </Link>
+          ))}
+        </nav>
+      </div>
       <div className="flex gap-4 items-center">
         <div>
           <Input
