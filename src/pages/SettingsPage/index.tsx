@@ -6,42 +6,105 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+type Inputs = {
+  title: string;
+  email: string;
+  color: string;
+  date: Date | undefined;
+};
 
 const SettingsPage = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  // const labelInput = (nameLabel: string) => (
-  //   <Label htmlFor={nameLabel} className="block w-full ml-1 text-lg font-semibold text-left">
-  //     {`${nameLabel.slice(0, 1).toLocaleUpperCase()}${nameLabel.slice(1)}`}
-  //   </Label>
-  // );
+  const schema = yup.object().shape({
+    title: yup.string().required('Title is required'),
+    email: yup.string().email('Must be a valid email').required('Email is required'),
+    color: yup
+      .string()
+      .required('Color is required')
+      .matches(/^#[0-9A-F]{6}$/i, 'Must be a valid hex color'),
+    date: yup.date().default(undefined).required('Date is required'),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data, event) => {
+    console.log(data);
+  };
+  console.log('🚀 - errors:', errors);
+
+  const watchedDate = watch('date');
+  const watchedColor = watch('color');
+
+  const handleColorChange = (newColor: string) => {
+    setValue('color', newColor);
+  };
 
   return (
-    <div className="lg:max-w-[800px] m-auto pt-24 sm:max-w-[80%] xs:max-w-[80%]">
-      <div className="grid lg:grid-cols-2 gap-8 md:grid-cols-1 ">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="lg:max-w-[800px] m-auto pt-24 sm:max-w-[80%] xs:max-w-[80%]"
+    >
+      <div className="grid gap-8 lg:grid-cols-2 md:grid-cols-1 ">
         <div className="">
           <Label htmlFor="title" className="block w-full ml-1 text-base font-semibold text-left">
             Title
           </Label>
-          <Input name="title" id="title" type="text" />
+          <Input {...register('title')} />
+          {errors.title && (
+            <span className="block w-full text-sm text-left text-red-600">
+              {errors.title.message}
+            </span>
+          )}
         </div>
         <div>
-          <Label htmlFor="title" className="block w-full ml-1 text-base font-semibold text-left">
+          <Label htmlFor="email" className="block w-full ml-1 text-base font-semibold text-left">
             Email
           </Label>
-          <Input name="email" id="email" type="email" />
+          <Input {...register('email')} />
+          {errors.email && (
+            <span className="block w-full text-sm text-left text-red-600">
+              {errors.email.message}
+            </span>
+          )}
         </div>
         <div>
-          <Label htmlFor="title" className="block w-full ml-1 text-base font-semibold text-left">
+          <Label htmlFor="color" className="block w-full ml-1 text-base font-semibold text-left">
             Background Color:
           </Label>
           <div className="flex items-center">
-            <Input className="w-[80%]" name="title" id="title" type="text" />
-            <Input className="w-[20%]" name="title" id="title" type="color" />
+            <Input
+              className="w-[80%]"
+              {...register('color')}
+              value={watchedColor}
+              onChange={(e) => handleColorChange(e.target.value)}
+            />
+            <Input
+              className="w-[20%]"
+              value={watchedColor}
+              {...register('color')}
+              type="color"
+              onChange={(e) => handleColorChange(e.target.value)}
+            />
           </div>
+          {errors.color && (
+            <span className="block w-full text-sm text-left text-red-600">
+              {errors.color.message}
+            </span>
+          )}
         </div>
         <div>
-          <Label htmlFor="title" className="block w-full ml-1 text-base font-semibold text-left">
+          <Label htmlFor="date" className="block w-full ml-1 text-base font-semibold text-left">
             Active date:
           </Label>
           <Popover>
@@ -50,26 +113,39 @@ const SettingsPage = () => {
                 variant={'outline'}
                 className={cn(
                   'w-full justify-start text-left font-normal',
-                  !date && 'text-muted-foreground'
+                  !watchedDate && 'text-muted-foreground'
                 )}
               >
                 <CalendarIcon className="w-4 h-4 mr-2" />
-                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                {watchedDate ? format(watchedDate, 'PPP') : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-              <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+              <Calendar
+                mode="single"
+                {...register('date')}
+                selected={watchedDate}
+                onSelect={(selectedDate) => {
+                  setValue('date', selectedDate, { shouldValidate: true });
+                }}
+                initialFocus
+              />
             </PopoverContent>
           </Popover>
+          {errors.date && (
+            <span className="block w-full text-sm text-left text-red-600">
+              {errors.date.message}
+            </span>
+          )}
         </div>
       </div>
 
       <div className="mt-10">
-        <Button className="w-40" type="submit" variant="destructive" size="sm" onClick={() => {}}>
+        <Button className="w-40" type="submit" variant="destructive" size="sm">
           Submit
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 
