@@ -14,7 +14,7 @@ type Inputs = {
   title: string;
   email: string;
   color: string;
-  date: Date | undefined;
+  date: Date;
 };
 
 const SettingsPage = () => {
@@ -40,8 +40,8 @@ const SettingsPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data, event) => {
     console.log(data);
+    console.log(event);
   };
-  console.log('🚀 - errors:', errors);
 
   const watchedDate = watch('date');
   const watchedColor = watch('color');
@@ -126,6 +126,7 @@ const SettingsPage = () => {
                 {...register('date')}
                 selected={watchedDate}
                 onSelect={(selectedDate) => {
+                  if (!selectedDate) return;
                   setValue('date', selectedDate, { shouldValidate: true });
                 }}
                 initialFocus
